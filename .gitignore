@@ -9,3 +9,4 @@ Servers/
 .DS_Store
 Thumbs.db
 db.properties
+/src/main/resources/db.properties
