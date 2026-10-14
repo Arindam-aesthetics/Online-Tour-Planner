@@ -1,1 +1,10 @@
 /build/
+/bin/
+/target/
+/.settings/
+.metadata/
+Servers/
+*.class
+*.log
+.DS_Store
+Thumbs.db
