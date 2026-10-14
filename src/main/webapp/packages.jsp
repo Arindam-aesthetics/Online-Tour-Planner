@@ -1,3 +1,12 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="java.util.List" %>
+<%@ page import="com.onlinetourplanner.model.TourPackage" %>
+
+<%
+    List<TourPackage> packages =
+            (List<TourPackage>) request.getAttribute("packages");
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -391,289 +400,83 @@
     </div>
 
 
-    <section class="packages">
+    <%
+    if (packages != null && !packages.isEmpty()) {
+        for (TourPackage tourPackage : packages) {
+%>
 
+<div class="package-card">
 
-        <!-- DARJEELING -->
+    <div class="package-image">
+        <img
+            src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80"
+            alt="<%= tourPackage.getDestination() %>">
 
-        <div class="package-card">
+        <div class="image-overlay"></div>
+    </div>
 
-            <span class="badge">
-                POPULAR
-            </span>
+    <div class="package-content">
 
-            <div class="package-image">
+        <h3>
+            <%= tourPackage.getName() %>
+        </h3>
 
-                <img
-                    src="https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=900&q=80"
-                    alt="Darjeeling"
-                >
+        <div class="rating">
+            &#9733;&#9733;&#9733;&#9733;&#9733;
+            <span>Tour Package</span>
+        </div>
 
-                <div class="image-overlay"></div>
+        <p>
+            <%= tourPackage.getDescription() %>
+        </p>
 
+        <div class="package-details">
+
+            <div class="detail">
+                Duration
+                <strong>
+                    <%= tourPackage.getDuration() %> Days
+                </strong>
             </div>
 
-
-            <div class="package-content">
-
-                <h3>
-                    Darjeeling Escape
-                </h3>
-
-
-                <div class="rating">
-    &#9733;&#9733;&#9733;&#9733;&#9733;
-    <span>4.8</span>
-</div>
-
-
-                <p>
-
-                    Explore beautiful hills, tea gardens
-                    and breathtaking views of Darjeeling.
-
-                </p>
-
-
-                <div class="package-details">
-
-                    <div class="detail">
-
-                        Duration
-
-                        <strong>
-                            4 Days / 3 Nights
-                        </strong>
-
-                    </div>
-
-
-                    <div class="detail">
-
-                        Location
-
-                        <strong>
-                            Darjeeling
-                        </strong>
-
-                    </div>
-
-                </div>
-
-
-                <div class="price-row">
-
-                    <div class="price">
-
-                        &#8377;18,000
-
-                        <span>
-                            / person
-                        </span>
-
-                    </div>
-
-                </div>
-
-
-                <a
-                    href="booking.jsp"
-                    class="view-btn"
-                >
-                    View &amp; Book
-                </a>
-
+            <div class="detail">
+                Location
+                <strong>
+                    <%= tourPackage.getDestination() %>
+                </strong>
             </div>
 
         </div>
 
-
-        <!-- GOA -->
-
-        <div class="package-card">
-
-            <div class="package-image">
-
-                <img
-                    src="https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=900&q=80"
-                    alt="Goa"
-                >
-
-                <div class="image-overlay"></div>
-
+        <div class="price-row">
+            <div class="price">
+                &#8377;<%= tourPackage.getPrice() %>
+                <span>/ person</span>
             </div>
-
-
-            <div class="package-content">
-
-                <h3>
-                    Goa Getaway
-                </h3>
-
-
-               <div class="rating">
-    &#9733;&#9733;&#9733;&#9733;&#9734;
-    <span>4.6</span>
-</div>
-
-
-                <p>
-
-                    Enjoy beautiful beaches, nightlife
-                    and the coastal atmosphere of Goa.
-
-                </p>
-
-
-                <div class="package-details">
-
-                    <div class="detail">
-
-                        Duration
-
-                        <strong>
-                            5 Days / 4 Nights
-                        </strong>
-
-                    </div>
-
-
-                    <div class="detail">
-
-                        Location
-
-                        <strong>
-                            Goa
-                        </strong>
-
-                    </div>
-
-                </div>
-
-
-                <div class="price-row">
-
-                    <div class="price">
-
-                        &#8377;25,000
-
-                        <span>
-                            / person
-                        </span>
-
-                    </div>
-
-                </div>
-
-
-                <a
-                    href="booking.jsp"
-                    class="view-btn"
-                >
-                    View &amp; Book
-                </a>
-
-            </div>
-
         </div>
 
+        <a
+            href="PackageBookingDetailsServlet?packageId=<%= tourPackage.getPackageId() %>"
+            class="view-btn">
+            View &amp; Book
+        </a>
 
-        <!-- RAJASTHAN -->
+    </div>
 
-        <div class="package-card">
-
-            <span class="badge">
-                BEST VALUE
-            </span>
-
-
-            <div class="package-image">
-
-                <img
-                    src="https://images.unsplash.com/photo-1477587458883-47145ed94245?auto=format&fit=crop&w=900&q=80"
-                    alt="Rajasthan"
-                >
-
-                <div class="image-overlay"></div>
-
-            </div>
-
-
-            <div class="package-content">
-
-                <h3>
-                    Rajasthan Heritage
-                </h3>
-
-
-                <div class="rating">
-    &#9733;&#9733;&#9733;&#9733;&#9733;
-    <span>4.9</span>
 </div>
 
+<%
+        }
+    } else {
+%>
 
-                <p>
+<div class="empty">
+    No tour packages found.
+</div>
 
-                    Discover magnificent forts, palaces
-                    and the rich cultural heritage of Rajasthan.
-
-                </p>
-
-
-                <div class="package-details">
-
-                    <div class="detail">
-
-                        Duration
-
-                        <strong>
-                            6 Days / 5 Nights
-                        </strong>
-
-                    </div>
-
-
-                    <div class="detail">
-
-                        Location
-
-                        <strong>
-                            Rajasthan
-                        </strong>
-
-                    </div>
-
-                </div>
-
-
-                <div class="price-row">
-
-                    <div class="price">
-
-                        &#8377;30,000
-
-                        <span>
-                            / person
-                        </span>
-
-                    </div>
-
-                </div>
-
-
-                <a
-                    href="booking.jsp"
-                    class="view-btn"
-                >
-                    View &amp; Book
-                </a>
-
-            </div>
-
-        </div>
-
-
-    </section>
+<%
+    }
+%>
 
 
 </main>

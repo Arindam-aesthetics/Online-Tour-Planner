@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+<%@ page import="java.util.List" %>
+<%@ page import="com.onlinetourplanner.model.Flight" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -228,36 +231,57 @@
 
     </div>
 
-    <section class="results">
+   <section class="results">
+    <h2>Available Flights</h2>
 
-        <h2>Available Flights</h2>
+    <%
+        List<Flight> flights = (List<Flight>) request.getAttribute("flights");
 
-        <!-- Flight results will be generated dynamically by FlightServlet -->
+        if (flights != null && !flights.isEmpty()) {
+            for (Flight flight : flights) {
+    %>
 
-        <div class="empty">
-            <p>Search for a route to view available flights.</p>
+    <div class="flight-card">
+        <div class="flight-info">
+            <h3><%= flight.getAirline() %></h3>
+            <p class="route">
+                <%= flight.getSource() %> → <%= flight.getDestination() %>
+            </p>
+            <p class="details">
+                <%= flight.getDepartureTime().toLocalTime() %>
+                |
+                <%= flight.getFlightNumber() %>
+                |
+                Seats available: <%= flight.getAvailableSeats() %>
+            </p>
         </div>
 
-        <!--
-        Example of a result that will later be generated using JSP:
+        <div>
+            <p class="price">₹<%= flight.getPrice() %></p>
+			<a href="BookingDetailsServlet?flightId=<%= flight.getFlightId() %>" class="book-btn">Book Now</a>        </div>
+    </div>
 
-        <div class="flight-card">
+    <%
+            }
+        } else if (flights != null) {
+    %>
 
-            <div class="flight-info">
-                <h3>IndiGo</h3>
-                <p class="route">Kolkata → Delhi</p>
-                <p class="details">10:30 AM | 2h 20m | 6E-123</p>
-            </div>
+    <div class="empty">
+        <p>No flights found for the selected route and date.</p>
+    </div>
 
-            <div>
-                <p class="price">₹5,000</p>
-                <a href="booking.jsp" class="book-btn">Book Now</a>
-            </div>
+    <%
+        } else {
+    %>
 
-        </div>
-        -->
+    <div class="empty">
+        <p>Search for a route to view available flights.</p>
+    </div>
 
-    </section>
+    <%
+        }
+    %>
+</section>
 
 </main>
 

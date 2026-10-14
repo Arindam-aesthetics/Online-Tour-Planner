@@ -1,3 +1,14 @@
+
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="java.util.List" %>
+<%@ page import="com.onlinetourplanner.model.Bus" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
+
+<%
+    List<Bus> buses = (List<Bus>) request.getAttribute("buses");
+    DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("dd MMM yyyy, hh:mm a");
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -134,11 +145,13 @@
         .route {
             font-size: 18px;
             font-weight: bold;
+            margin-bottom: 10px;
         }
 
         .details {
             color: #666;
             margin-top: 8px;
+            line-height: 1.7;
         }
 
         .price {
@@ -203,15 +216,13 @@
 <body>
 
 <header>
-
     <h1>Online Tour Planner</h1>
 
     <nav>
         <a href="userHome.jsp">Dashboard</a>
-        <a href="myBookings.jsp">My Bookings</a>
+        <a href="MyBookingsServlet">My Bookings</a>
         <a href="LogoutServlet">Logout</a>
     </nav>
-
 </header>
 
 <main>
@@ -219,56 +230,102 @@
     <h2>Search Buses</h2>
 
     <div class="search-box">
-
         <form class="search-form" action="BusServlet" method="get">
 
             <div>
                 <label>From</label>
-                <input type="text" name="source" placeholder="Departure city" required>
+                <input type="text"
+                       name="source"
+                       placeholder="Departure city"
+                       required>
             </div>
 
             <div>
                 <label>To</label>
-                <input type="text" name="destination" placeholder="Destination city" required>
+                <input type="text"
+                       name="destination"
+                       placeholder="Destination city"
+                       required>
             </div>
 
             <div>
                 <label>Date</label>
-                <input type="date" name="date" required>
+                <input type="date"
+                       name="date"
+                       required>
             </div>
 
             <button type="submit">Search</button>
 
         </form>
-
     </div>
 
     <section class="results">
 
         <h2>Available Buses</h2>
 
-        <div class="empty">
-            <p>Search for a route to view available buses.</p>
-        </div>
-
-        <!--
-        Example of a result that will later be generated using JSP:
+        <%
+            if (buses != null && !buses.isEmpty()) {
+                for (Bus bus : buses) {
+        %>
 
         <div class="bus-card">
 
             <div class="bus-info">
-                <h3>Green Line Travels</h3>
-                <p class="route">Asansol → Kolkata</p>
-                <p class="details">08:30 AM | AC Sleeper | 32 Seats</p>
+
+                <h3>
+                    <%= bus.getOperator() %>
+                    - <%= bus.getBusNumber() %>
+                </h3>
+
+                <p class="route">
+                    <%= bus.getSource() %> &rarr; <%= bus.getDestination() %>
+                </p>
+
+                <div class="details">
+                    <p>
+                        Departure:
+                        <%= bus.getDepartureTime().format(timeFormatter) %>
+                    </p>
+
+                    <p>
+                        Arrival:
+                        <%= bus.getArrivalTime().format(timeFormatter) %>
+                    </p>
+
+                    <p>
+                        Available Seats:
+                        <%= bus.getAvailableSeats() %>
+                    </p>
+                </div>
+
             </div>
 
             <div>
-                <p class="price">₹800</p>
-                <a href="booking.jsp" class="book-btn">Book Now</a>
+                <p class="price">
+                    &#8377;<%= bus.getPrice() %>
+                </p>
+
+                <a href="BusBookingDetailsServlet?busId=<%= bus.getBusId() %>"
+                   class="book-btn">
+                    Book Now
+                </a>
             </div>
 
         </div>
-        -->
+
+        <%
+                }
+            } else {
+        %>
+
+        <div class="empty">
+            <p>No buses found for this route.</p>
+        </div>
+
+        <%
+            }
+        %>
 
     </section>
 

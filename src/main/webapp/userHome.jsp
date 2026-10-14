@@ -204,7 +204,7 @@
 
     <nav>
         <a href="userHome.jsp">Dashboard</a>
-        <a href="myBookings.jsp">My Bookings</a>
+        <a href="MyBookingsServlet">My Bookings</a>
         <a href="LogoutServlet">Logout</a>
     </nav>
 
@@ -240,7 +240,7 @@
             <p>Choose a complete package for your journey.</p>
         </a>
 
-        <a class="card" href="myBookings.jsp">
+        <a class="card" href="MyBookingsServlet">
             <div class="icon">📋</div>
             <h3>My Bookings</h3>
             <p>View and manage your existing bookings.</p>

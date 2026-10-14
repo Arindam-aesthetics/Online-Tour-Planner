@@ -1,3 +1,13 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+
+<%@ page import="java.util.List" %>
+<%@ page import="com.onlinetourplanner.model.Hotel" %>
+
+<%
+    List<Hotel> hotels = (List<Hotel>) request.getAttribute("hotels");
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -136,6 +146,11 @@
             margin-bottom: 8px;
         }
 
+        .description {
+            color: #666;
+            margin-bottom: 8px;
+        }
+
         .rooms {
             color: #666;
         }
@@ -202,15 +217,13 @@
 <body>
 
 <header>
-
     <h1>Online Tour Planner</h1>
 
     <nav>
         <a href="userHome.jsp">Dashboard</a>
-        <a href="myBookings.jsp">My Bookings</a>
+        <a href="MyBookingsServlet">My Bookings</a>
         <a href="LogoutServlet">Logout</a>
     </nav>
-
 </header>
 
 <main>
@@ -218,12 +231,14 @@
     <h2>Search Hotels</h2>
 
     <div class="search-box">
-
         <form class="search-form" action="HotelServlet" method="get">
 
             <div>
                 <label>Location</label>
-                <input type="text" name="location" placeholder="Enter city or location" required>
+                <input type="text"
+                       name="location"
+                       placeholder="Enter city or location"
+                       required>
             </div>
 
             <div>
@@ -239,35 +254,60 @@
             <button type="submit">Search</button>
 
         </form>
-
     </div>
 
     <section class="results">
 
         <h2>Available Hotels</h2>
 
-        <div class="empty">
-            <p>Search for a location to view available hotels.</p>
-        </div>
-
-        <!--
-        Example of a result that will later be generated using JSP:
+        <%
+            if (hotels != null && !hotels.isEmpty()) {
+                for (Hotel hotel : hotels) {
+        %>
 
         <div class="hotel-card">
 
             <div class="hotel-info">
-                <h3>Hotel Grand Palace</h3>
-                <p class="location">📍 Kolkata</p>
-                <p class="rooms">Available Rooms: 12</p>
+                <h3><%= hotel.getName() %></h3>
+
+                <p class="location">
+                    &#128205; <%= hotel.getLocation() %>
+                </p>
+
+                <p class="description">
+                    <%= hotel.getDescription() %>
+                </p>
+
+                <p class="rooms">
+                    Available Rooms: <%= hotel.getAvailableRooms() %>
+                </p>
             </div>
 
             <div>
-                <p class="price">₹3,500 / night</p>
-                <a href="booking.jsp" class="book-btn">Book Now</a>
+                <p class="price">
+                    &#8377;<%= hotel.getPricePerNight() %> / night
+                </p>
+
+                <a href="HotelBookingDetailsServlet?hotelId=<%= hotel.getHotelId() %>"
+                   class="book-btn">
+                    Book Now
+                </a>
             </div>
 
         </div>
-        -->
+
+        <%
+                }
+            } else {
+        %>
+
+        <div class="empty">
+            <p>No hotels found for this location.</p>
+        </div>
+
+        <%
+            }
+        %>
 
     </section>
 

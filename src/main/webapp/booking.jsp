@@ -1,3 +1,7 @@
+<%@ page import="com.onlinetourplanner.model.Flight" %>
+<%
+    Flight flight = (Flight) request.getAttribute("flight");
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -5,6 +9,22 @@
     <title>Booking - Online Tour Planner</title>
 
     <style>
+    
+    .back-link {
+    text-align: center;
+    margin-top: 22px;
+}
+
+.back-link a {
+    color: #315efb;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.back-link a:hover {
+    text-decoration: underline;
+}
         * {
             box-sizing: border-box;
             margin: 0;
@@ -186,30 +206,30 @@
 
             <div class="detail">
                 <span>Service Type</span>
-                <span>Will be loaded</span>
+                <span>Flight</span>
             </div>
 
             <div class="detail">
                 <span>Service Name</span>
-                <span>Will be loaded</span>
+                <span><%= flight.getAirline() %></span>
             </div>
 
             <div class="detail">
                 <span>Destination</span>
-                <span>Will be loaded</span>
+                <span><%= flight.getDestination() %></span>
             </div>
 
             <div class="detail">
                 <span>Price</span>
-                <span>Will be loaded</span>
+                <span>&#8377;<%= flight.getPrice() %></span>
             </div>
 
         </div>
 
         <form action="BookingServlet" method="post">
 
-            <input type="hidden" name="itemId" value="">
-            <input type="hidden" name="type" value="">
+            <input type="hidden" name="itemId" value="<%= flight.getFlightId() %>">
+			<input type="hidden" name="type" value="flight">
 
             <label>Number of Travellers</label>
             <input type="number" name="travellers" min="1" max="20" value="1" required>
@@ -223,9 +243,9 @@
 
         </form>
 
-        <a href="userHome.jsp" class="back-btn">
-            ← Back to Dashboard
-        </a>
+        <div class="back-link">
+    <a href="userHome.jsp">&#8592; Back to Dashboard</a>
+</div>
 
     </div>
 
