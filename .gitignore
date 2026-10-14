@@ -8,3 +8,4 @@ Servers/
 *.log
 .DS_Store
 Thumbs.db
+db.properties
